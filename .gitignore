@@ -3,7 +3,9 @@ aclImdb*
 job.py
 run_intel.sh
 *.e*
+*.o*
 *.yml
 neg.txt
 pos.txt
 unlab.txt
+models/*

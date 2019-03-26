@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo contains a collection of modules for training a logistic regression classifier to predict sentiment of IMDB reviews. The main purpose of this project was to familiarize myself with doc2vec, which is used to derive numerical feature vectors from the text of the reviews that codify semantic information.
+This repo contains a collection of modules for training a KNN classifier to predict sentiment of IMDB reviews. The main purpose of this project was to familiarize myself with doc2vec, which is used to derive numerical feature vectors from the text of the reviews that codify semantic information.
 
 ## Classifying Sentiment
 

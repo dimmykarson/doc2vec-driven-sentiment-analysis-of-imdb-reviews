@@ -53,7 +53,7 @@ class Vectorize_Reviews(object):
     def shuffle_lists(X, Y):
         # Shuffle X and Y while maintaining index coordination
         X_shuf, Y_shuf = [], []
-        idx_list = range(len(X))
+        idx_list = list(range(len(X)))
         shuffle(idx_list)
         for idx in idx_list:
             X_shuf.append(X[idx])
@@ -82,7 +82,7 @@ class Vectorize_Reviews(object):
         # Initialize doc2vec distributed memory object
         model = gensim.models.Doc2Vec(min_count=self.min_count,
                                       window=self.window,
-                                      size=self.vec_size,
+                                      vector_size=self.vec_size,
                                       sample=self.sample,
                                       negative=self.negative,
                                       workers=self.workers,
@@ -101,7 +101,7 @@ class Vectorize_Reviews(object):
         train_reviews = X + unlab_set
         for epoch in range(self.epochs):
             print("Training epoch: {0}/{1}".format(epoch+1, self.epochs))
-            model.train(train_reviews)
+            model.train(train_reviews, total_examples=model.corpus_count, epochs=model.epochs)
 
             # Shuffle data
             print("Shuffling data...")
