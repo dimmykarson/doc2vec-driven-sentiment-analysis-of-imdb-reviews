@@ -120,7 +120,7 @@ def prepare_data():
     preparer = Prepare_Reviews(data_dir)
 
     # Import data
-    print "Importing the data..."
+    print("Importing the data...")
     X, Y, unlab_reviews = preparer.import_data()
 
     # Split the labeled data
@@ -128,11 +128,11 @@ def prepare_data():
     X_train, X_test, Y_train, Y_test = preparer.split_data(X, Y, test_size)
 
     # Clean reviews
-    print "Cleaning the data..."
+    print("Cleaning the data...")
     X_train, X_test, unlab_reviews = preparer.clean_reviews(X_train, X_test, unlab_reviews)
 
     # Label reviews
-    print "Labeling the data..."
+    print("Labeling the data...")
     X_train, X_test, unlab_reviews = preparer.label_reviews(X_train, X_test, unlab_reviews)
 
     return X_train, Y_train, X_test, Y_test, unlab_reviews

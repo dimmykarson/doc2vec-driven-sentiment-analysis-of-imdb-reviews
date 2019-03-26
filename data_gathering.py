@@ -49,7 +49,7 @@ class Condense_Reviews(object):
                      "unlab": unlab_subdirs}
 
         # Condense all files from positive sentiment subdirectories
-        for sentiment, subdirs in sent_dict.iteritems():
+        for sentiment, subdirs in sent_dict.items():
             # Define full path for output file
             full_fname = join(self.output_dir, sentiment + ".txt")
             with open(full_fname, "w") as output_file:
@@ -71,17 +71,17 @@ def run_condenser():
         condenser = Condense_Reviews(data_dir, output_dir)
 
         if isdir("aclImdb"):
-            print "Gathering data..."
+            print("Gathering data...")
             condenser.condense()
         else:
-            print "The data directory seems to be missing. Downloading data now..."
+            print("The data directory seems to be missing. Downloading data now...")
             condenser.get_data()
 
-            print "\nGathering data..."
+            print("\nGathering data...")
             condenser.condense()
 
     else:
-        print "Data is already condensed. Performing preprocessing..."
+        print("Data is already condensed. Performing preprocessing...")
 
 
 if __name__ == "__main__":

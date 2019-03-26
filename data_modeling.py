@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import os
 from os.path import isfile, isdir
 from random import shuffle
-import cPickle
+import pickle
 
 
 class Vectorize_Reviews(object):
@@ -89,7 +89,7 @@ class Vectorize_Reviews(object):
                                       dm=self.dm)
 
         # Build vocabulary over all reviews
-        print "Building vocabulary...\n"
+        print("Building vocabulary...\n")
         all_reviews = self.X_train + self.X_test + self.unlab_reviews
         model.build_vocab(all_reviews)
 
@@ -100,29 +100,29 @@ class Vectorize_Reviews(object):
         # Run through the dataset multiple times, shuffling the data each time to improve accuracy
         train_reviews = X + unlab_set
         for epoch in range(self.epochs):
-            print "Training epoch: {0}/{1}".format(epoch+1, self.epochs)
+            print("Training epoch: {0}/{1}".format(epoch+1, self.epochs))
             model.train(train_reviews)
 
             # Shuffle data
-            print "Shuffling data..."
+            print("Shuffling data...")
             X, Y = self.shuffle_lists(X, Y)
             shuffle(unlab_set)
             train_reviews = X + unlab_set
 
-        print "Calculating doc2vec vectors..."
+        print("Calculating doc2vec vectors...")
         train_vecs = self.corpus_to_vec(model, X)
-        print "Done training...\n"
+        print("Done training...\n")
 
         return train_vecs, model, X, Y, unlab_set
 
 
     def train_doc2vec(self):
         if isfile("models/doc2vec_model.doc2vec"):
-            print "Doc2vec model is already trained. Loading existing model..."
+            print("Doc2vec model is already trained. Loading existing model...")
             model = gensim.models.Doc2Vec.load("models/doc2vec_model.doc2vec")
 
             # Calculate doc2vec vectors
-            print "Calculating doc2vec vectors..."
+            print("Calculating doc2vec vectors...")
             train_vecs = self.corpus_to_vec(model, self.X_train)
             test_vecs = self.corpus_to_vec(model, self.X_test)
 
@@ -136,7 +136,7 @@ class Vectorize_Reviews(object):
             model = self.build_vocabulary()
 
             # Train doc2vec model and get semantic vectors for training set
-            print "Training doc2vec model on training dataset..."
+            print("Training doc2vec model on training dataset...")
             (train_vecs,
              model,
              self.X_train,
@@ -147,7 +147,7 @@ class Vectorize_Reviews(object):
                                                          unlab_set=self.unlab_reviews)
 
             # Extend doc2vec model training and get semantic vectors for testing set
-            print "Training doc2vec model on testing dataset..."
+            print("Training doc2vec model on testing dataset...")
             test_vecs, model, self.X_test, self.Y_test, _ = self.train_on_reviews(model=model,
                                                                                   X=self.X_test,
                                                                                   Y=self.Y_test)
@@ -180,20 +180,20 @@ class Classify_Reviews(object):
     def persist_model(model):
         # Pickle model for persistence
         with open("models/logreg_model.pkl", 'wb') as output_model:
-            cPickle.dump(model, output_model)
+            pickle.dump(model, output_model)
 
 
     @staticmethod
     def load_model():
         # Load pickled random forest model
         with open("models/logreg_model.pkl", 'rb') as input_model:
-            model = cPickle.load(input_model)
+            model = pickle.load(input_model)
         return model
 
 
     def train_model(self):
         if not isfile("models/logreg_model.pkl"):
-            print "Training logistic regression classifier..."
+            print("Training logistic regression classifier...")
             # Initialize logistic regression classifier employing stochastic gradient descent with L1 regularization
             lr = SGDClassifier(loss="log", penalty="l1")
 
@@ -214,11 +214,11 @@ class Classify_Reviews(object):
             # Extract best estimator and pickle model for persistence
             self.persist_model(clf.best_estimator_)
         else:
-            print "Logistic regression classifier is already trained..."
+            print("Logistic regression classifier is already trained...")
 
 
     def validate_model(self):
-        print "Validating classifier..."
+        print("Validating classifier...")
 
         # Load classifier
         model = self.load_model()
@@ -230,10 +230,10 @@ class Classify_Reviews(object):
         roc_auc = roc_auc_score(self.Y_test, Y_predicted)
 
         # Print full classification report
-        print classification_report(self.Y_test,
+        print(classification_report(self.Y_test,
                                     Y_predicted,
-                                    target_names=["negative", "positive"])
-        print "Area under ROC curve: {:0.3f}".format(roc_auc)
+                                    target_names=["negative", "positive"]))
+        print("Area under ROC curve: {:0.3f}".format(roc_auc))
 
         # Compute ROC curve and area under the curve
         probs = model.predict_proba(self.test_vecs)[:, 1]
@@ -250,4 +250,4 @@ class Classify_Reviews(object):
         plt.legend(loc="lower right", frameon = True).get_frame().set_edgecolor('black')
         plt.grid(True, linestyle = 'dotted')
         plt.savefig("doc2vec_roc.png")
-        print "ROC curve created..."
+        print("ROC curve created...")
