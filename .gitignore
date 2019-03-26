@@ -1,0 +1,4 @@
+__pycache__/*
+aclImdb*
+job.py
+run_intel.sh
