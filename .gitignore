@@ -2,3 +2,8 @@ __pycache__/*
 aclImdb*
 job.py
 run_intel.sh
+*.e*
+*.yml
+neg.txt
+pos.txt
+unlab.txt
